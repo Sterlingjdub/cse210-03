@@ -9,9 +9,9 @@ class Director:
     The responsibility of a Director is to control the sequence of play.
 
     Attributes:
-        hider (Hider): The game's hider.
+        
         is_playing (boolean): Whether or not to keep playing.
-        seeker (Seeker): The game's seeker.
+        
         terminal_service: For getting and displaying information on the terminal.
     """
 
@@ -21,10 +21,10 @@ class Director:
         Args:
             self (Director): an instance of Director.
         """
-        self._hider = Hider()
+        self._word = Hider
         self._is_playing = True
-        self._seeker = Seeker()
-        self._terminal_service = TerminalService()
+        self._letters = Seeker
+        self._parachet = TerminalService()
         
     def start_game(self):
         """Starts the game by running the main game loop.
@@ -47,20 +47,20 @@ class Director:
         self._seeker.move_location(new_location)
         
     def _do_updates(self):
-        """Keeps watch on where the seeker is moving.
+        """Keeps watch on what letters are guessed and which are still needed.
 
         Args:
             self (Director): An instance of Director.
         """
-        self._hider.watch_seeker(self._seeker)
+        self._word.x(self._letters)
         
     def _do_outputs(self):
-        """Provides a hint for the seeker to use.
+        """
 
         Args:
             self (Director): An instance of Director.
         """
-        hint = self._hider.get_hint()
-        self._terminal_service.write_text(hint)
-        if self._hider.is_found():
+    
+        self._parachet.write_text(loseOne)
+        if self._word.is_geussed():
             self._is_playing = False
