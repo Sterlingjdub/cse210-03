@@ -1,6 +1,6 @@
 from game.terminal_service import TerminalService
-from game.parachute import Parachute
-from game.word import Word
+from game.hider import Hider
+from game.seeker import Seeker
 
 
 class Director:
@@ -20,9 +20,9 @@ class Director:
         Args:
             self (Director): an instance of Director.
         """
-        self._word = Word()
+        self._word = Hider
         self._is_playing = True
-        self._letters = Parachute()
+        self._letters = Seeker
         self._parachet = TerminalService()
         
     def start_game(self):
@@ -58,5 +58,5 @@ class Director:
         """
     
         self._parachet.write_text(loseOne)
-        if self._word.is_guessed():
+        if self._word.is_geussed():
             self._is_playing = False
