@@ -27,8 +27,8 @@ class Drawer():
         self.estado = self.estado + 1
 
     def drawWord(self, word, letters):
-        print(word)
-        print(letters)
+        #print(word)
+        #print(letters)
         i = 0 
         l = len(word)
         while i < l:
