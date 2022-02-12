@@ -21,10 +21,14 @@ class Director:
             self (Director): an instance of Director.
         """
         self._word = Word()
+        self.letters = []
+        self.hit = 0
+        self.tries = 0
         self._is_playing = True
-        # self._letters = Seeker - I tried putting in list(self._word) and kept getting errors. List needed from word for guessing reasons
-        self._parachute = Parachute()
         self._terminal_service = TerminalService()
+        # self._letters = Seeker - I tried putting in list(self._word) and kept getting errors. List needed from word for guessing reasons
+        
+        
         
     def start_game(self):
         """Starts the game by running the main game loop.
@@ -32,9 +36,8 @@ class Director:
         Args:
             self (Director): an instance of Director.
         """
-        while self._is_playing:
+        while self._is_playing and self.tries < 4:
             self._get_inputs()
-            self._do_updates()
             self._do_outputs()
 
     def _get_inputs(self):
@@ -42,22 +45,30 @@ class Director:
         Args:
             self (Director): An instance of Director.
         """
-        user_guess = self._terminal_service.read_letter("\nEnter a letter: ")
-        self._word.guess(user_guess)
         
-    def _do_updates(self):
+        user_guess = self._terminal_service.read_letter("\nEnter a letter: ")
+        
+        if ( self._word.guess(user_guess, self.hit)):
+           self._do_updates(user_guess)
+        else:
+            self.tries = self.tries + 1
+            self._word.updateState()
+        
+    def _do_updates(self, guess):
         """Keeps watch on what letters are guessed and which are still needed.
         Args:
             self (Director): An instance of Director.
         """
-        self._word.x(self._letters)
+        self.hit = self.hit + 1
+        self.tries = self.tries + 1
+        self.letters.append(guess)
         
     def _do_outputs(self):
         """
         Args:
             self (Director): An instance of Director.
         """
-    
-        self._parachute.write_text(loseOne)
-        if self._word.is_guessed():
-            self._is_playing = False
+        self._word.showDraw(self.letters)
+        #self._parachute.write_text(loseOne)
+        #if self._word.is_guessed():
+        #    self._is_playing = False
