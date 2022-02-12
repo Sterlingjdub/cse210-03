@@ -1,6 +1,6 @@
 from game.terminal_service import TerminalService
-from game.hider import Hider
-from game.seeker import Seeker
+from game.parachute import Parachute
+from game.word import Word
 
 
 class Director:
@@ -20,10 +20,11 @@ class Director:
         Args:
             self (Director): an instance of Director.
         """
-        self._word = Hider
+        self._word = Word()
         self._is_playing = True
-        self._letters = Seeker
-        self._parachet = TerminalService()
+        # self._letters = Seeker - I tried putting in list(self._word) and kept getting errors. List needed from word for guessing reasons
+        self._parachute = Parachute()
+        self._terminal_service = TerminalService()
         
     def start_game(self):
         """Starts the game by running the main game loop.
@@ -41,8 +42,8 @@ class Director:
         Args:
             self (Director): An instance of Director.
         """
-        new_location = self._terminal_service.read_number("\nEnter a location [1-1000]: ")
-        self._seeker.move_location(new_location)
+        user_guess = self._terminal_service.read_letter("\nEnter a letter: ")
+        self._word.guess(user_guess)
         
     def _do_updates(self):
         """Keeps watch on what letters are guessed and which are still needed.
@@ -57,6 +58,6 @@ class Director:
             self (Director): An instance of Director.
         """
     
-        self._parachet.write_text(loseOne)
-        if self._word.is_geussed():
+        self._parachute.write_text(loseOne)
+        if self._word.is_guessed():
             self._is_playing = False
